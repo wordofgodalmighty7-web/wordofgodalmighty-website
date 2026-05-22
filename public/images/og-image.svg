@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0f1a"/>
+      <stop offset="100%" style="stop-color:#121826"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#c9a227"/>
+      <stop offset="100%" style="stop-color:#8b7355"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="600" cy="200" r="180" fill="#c9a227" opacity="0.08"/>
+  <text x="600" y="280" text-anchor="middle" font-family="Georgia, serif" font-size="52" font-weight="600" fill="url(#gold)">Word of God Almighty</text>
+  <text x="600" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" fill="#94a3b8">Christ-Centered Digital Experiences</text>
+  <text x="600" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#c9a227">wordofgodalmighty.store</text>
+</svg>
