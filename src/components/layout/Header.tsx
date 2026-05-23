@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { site, navLinks } from "@/lib/content";
+import { SocialLinks } from "@/components/ui/SocialLinks";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -44,16 +45,17 @@ export function Header() {
           {site.name}
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {uniqueNav.map((link) => (
             <Link
               key={link.href + link.label}
               href={link.href}
-              className="rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+              className="rounded-full px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
             >
               {link.label}
             </Link>
           ))}
+          <SocialLinks className="ml-2 hidden xl:flex" iconClassName="h-4 w-4" />
           {mounted && (
             <button
               type="button"
@@ -66,7 +68,7 @@ export function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-2 lg:hidden">
           {mounted && (
             <button
               type="button"
@@ -94,7 +96,7 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="glass border-t border-border md:hidden"
+            className="glass border-t border-border lg:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4">
               {uniqueNav.map((link) => (

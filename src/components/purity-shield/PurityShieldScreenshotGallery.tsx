@@ -4,7 +4,7 @@ import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { AppScreenshot } from "@/lib/content";
-import { staggerContainer, fadeUp } from "@/lib/motion";
+import { staggerReveal, staggerRevealItem, fadeUp } from "@/lib/motion";
 import { PurityShieldScreenshotCard } from "./PurityShieldScreenshotCard";
 
 interface PurityShieldScreenshotGalleryProps {
@@ -52,8 +52,7 @@ export function PurityShieldScreenshotGallery({ screenshots }: PurityShieldScree
           ref={scrollRef}
           role="region"
           aria-label="Purity Shield Pro app screenshots"
-          className="scrollbar-hide flex gap-5 overflow-x-auto scroll-smooth px-1 pb-2"
-          style={{ scrollSnapType: "x mandatory" }}
+          className="scrollbar-hide snap-carousel flex gap-5 overflow-x-auto scroll-smooth px-1 pb-2"
         >
           {screenshots.map((shot) => (
             <PurityShieldScreenshotCard key={shot.id} screenshot={shot} />
@@ -75,14 +74,14 @@ export function PurityShieldScreenshotGallery({ screenshots }: PurityShieldScree
           </motion.div>
         )}
         <motion.div
-          variants={staggerContainer}
+          variants={staggerReveal}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
           className="grid grid-cols-2 gap-6 xl:grid-cols-4"
         >
           {rest.map((shot) => (
-            <motion.div key={shot.id} variants={fadeUp} className="flex justify-center">
+            <motion.div key={shot.id} variants={staggerRevealItem} className="flex justify-center">
               <PurityShieldScreenshotCard screenshot={shot} className="w-full max-w-[220px]" />
             </motion.div>
           ))}
@@ -91,14 +90,14 @@ export function PurityShieldScreenshotGallery({ screenshots }: PurityShieldScree
 
       {/* Tablet: simple grid */}
       <motion.div
-        variants={staggerContainer}
+        variants={staggerReveal}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-40px" }}
         className="hidden gap-5 md:grid md:grid-cols-2 lg:hidden"
       >
         {screenshots.map((shot) => (
-          <motion.div key={shot.id} variants={fadeUp} className="flex justify-center">
+          <motion.div key={shot.id} variants={staggerRevealItem} className="flex justify-center">
             <PurityShieldScreenshotCard screenshot={shot} className="w-full max-w-[240px]" />
           </motion.div>
         ))}

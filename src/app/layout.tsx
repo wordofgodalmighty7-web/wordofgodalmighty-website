@@ -66,6 +66,8 @@ export const metadata: Metadata = {
     images: ["/images/og-image.svg"],
   },
   robots: { index: true, follow: true },
+  applicationName: site.name,
+  category: "Christian ministry and technology",
 };
 
 export default function RootLayout({

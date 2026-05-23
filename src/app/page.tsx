@@ -1,22 +1,65 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
+import { MissionCinematic } from "@/components/sections/MissionCinematic";
+import { Metrics } from "@/components/sections/Metrics";
+import { FounderStory } from "@/components/sections/FounderStory";
 import { Team } from "@/components/sections/Team";
 import { Projects } from "@/components/sections/Projects";
+import { Testimonials } from "@/components/sections/Testimonials";
+import { Roadmap } from "@/components/sections/Roadmap";
 import { Vision } from "@/components/sections/Vision";
+import { Newsletter } from "@/components/sections/Newsletter";
 import { Contact } from "@/components/sections/Contact";
-import { site } from "@/lib/content";
+import { site, projects, PLAY_STORE_URL } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: site.name,
-  url: getSiteUrl(),
-  email: site.email,
-  description: site.tagline,
-};
+const siteUrl = getSiteUrl();
+const purityShield = projects.items.find((p) => p.id === "purity-shield");
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: site.name,
+    url: siteUrl,
+    email: site.email,
+    description: site.tagline,
+    sameAs: [
+      "https://www.etsy.com/shop/WORDOFGODALMIGHTY",
+      PLAY_STORE_URL,
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.name,
+    url: siteUrl,
+    description: site.tagline,
+    publisher: {
+      "@type": "Organization",
+      name: site.name,
+    },
+  },
+  ...(purityShield && purityShield.type === "app"
+    ? [
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: purityShield.name,
+          applicationCategory: "LifestyleApplication",
+          operatingSystem: "Android",
+          description: purityShield.description,
+          url: PLAY_STORE_URL,
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "USD",
+          },
+        },
+      ]
+    : []),
+];
 
 export default function Home() {
   return (
@@ -29,13 +72,23 @@ export default function Home() {
       <main>
         <Hero />
         <div className="section-divider mx-auto max-w-6xl" />
-        <About />
+        <MissionCinematic />
+        <div className="section-divider mx-auto max-w-6xl" />
+        <Metrics />
+        <div className="section-divider mx-auto max-w-6xl" />
+        <FounderStory />
         <div className="section-divider mx-auto max-w-6xl" />
         <Team />
         <div className="section-divider mx-auto max-w-6xl" />
         <Projects />
         <div className="section-divider mx-auto max-w-6xl" />
+        <Testimonials />
+        <div className="section-divider mx-auto max-w-6xl" />
+        <Roadmap />
+        <div className="section-divider mx-auto max-w-6xl" />
         <Vision />
+        <div className="section-divider mx-auto max-w-6xl" />
+        <Newsletter />
         <div className="section-divider mx-auto max-w-6xl" />
         <Contact />
       </main>

@@ -4,7 +4,7 @@ import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { EtsyProduct } from "@/lib/content";
-import { staggerContainer, fadeUp } from "@/lib/motion";
+import { staggerReveal, staggerRevealItem } from "@/lib/motion";
 import { EtsyProductCard } from "./EtsyProductCard";
 
 interface EtsyProductGalleryProps {
@@ -62,14 +62,14 @@ export function EtsyProductGallery({ products }: EtsyProductGalleryProps) {
 
       {/* Desktop: responsive grid */}
       <motion.div
-        variants={staggerContainer}
+        variants={staggerReveal}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-40px" }}
         className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         {products.map((product) => (
-          <motion.div key={product.id} variants={fadeUp}>
+          <motion.div key={product.id} variants={staggerRevealItem}>
             <EtsyProductCard product={product} className="w-full" />
           </motion.div>
         ))}
