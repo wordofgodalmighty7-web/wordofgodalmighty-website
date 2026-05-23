@@ -11,7 +11,7 @@ import { Roadmap } from "@/components/sections/Roadmap";
 import { Vision } from "@/components/sections/Vision";
 import { Newsletter } from "@/components/sections/Newsletter";
 import { Contact } from "@/components/sections/Contact";
-import { site, projects, PLAY_STORE_URL } from "@/lib/content";
+import { site, projects, PLAY_STORE_URL, SHOW_TESTIMONIALS } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 
 const siteUrl = getSiteUrl();
@@ -81,8 +81,12 @@ export default function Home() {
         <Team />
         <div className="section-divider mx-auto max-w-6xl" />
         <Projects />
-        <div className="section-divider mx-auto max-w-6xl" />
-        <Testimonials />
+        {SHOW_TESTIMONIALS && (
+          <>
+            <div className="section-divider mx-auto max-w-6xl" />
+            <Testimonials />
+          </>
+        )}
         <div className="section-divider mx-auto max-w-6xl" />
         <Roadmap />
         <div className="section-divider mx-auto max-w-6xl" />

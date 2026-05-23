@@ -12,10 +12,13 @@ export const site = {
 /** Formspree contact form endpoint */
 export const FORMSPREE_FORM_URL = "https://formspree.io/f/xzdwglnn";
 
+/** Set to true to show testimonials on the homepage and in nav */
+export const SHOW_TESTIMONIALS = false;
+
 export const navLinks = [
   { label: "Mission", href: "#about" },
   { label: "Projects", href: "#projects" },
-  { label: "Testimonials", href: "#testimonials" },
+  ...(SHOW_TESTIMONIALS ? [{ label: "Testimonials", href: "#testimonials" }] : []),
   { label: "Roadmap", href: "#roadmap" },
   { label: "Story", href: "#story" },
   { label: "Contact", href: "#contact" },
@@ -97,6 +100,7 @@ export type Testimonial = {
   isPlaceholder?: boolean;
 };
 
+/** Testimonials content — enable with SHOW_TESTIMONIALS when you have real quotes */
 export const testimonials: {
   title: string;
   subtitle: string;
