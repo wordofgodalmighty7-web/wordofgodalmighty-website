@@ -28,7 +28,7 @@ npm install
 cp .env.local.example .env.local
 ```
 
-Edit `.env.local` and set your Formspree form ID from [formspree.io](https://formspree.io).
+The contact form uses Formspree (`FORMSPREE_FORM_URL` in `src/lib/content.ts`). No extra setup required unless you change the endpoint.
 
 4. Run the development server:
 
@@ -68,6 +68,14 @@ npm start
 Edit [`src/lib/content.ts`](src/lib/content.ts) for copy, team, projects, Etsy/Play Store links, and contact details.
 
 Replace placeholder visuals in `public/images/` when ready.
+
+### Etsy product mockups
+
+Etsy mockups are in `public/images/etsy/` (`product-1.png`–`product-7.png`). Update labels or paths in `src/lib/content.ts` if you swap designs.
+
+### Purity Shield Pro screenshots
+
+App screenshots live in `public/images/purity-shield/` (`screenshot-1.png`–`screenshot-7.png`). Play Store URL: `PLAY_STORE_URL` in `src/lib/content.ts` (`com.purityshield.pro`).
 
 ## Deploy
 

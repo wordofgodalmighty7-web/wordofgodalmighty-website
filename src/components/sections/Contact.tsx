@@ -1,47 +1,59 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { motion } from "framer-motion";
-import { Mail, Send, CheckCircle, AlertCircle } from "lucide-react";
-import { site, contact } from "@/lib/content";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { site, contact, FORMSPREE_FORM_URL } from "@/lib/content";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { fadeUp } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
+const inputClassName =
+  "w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent disabled:cursor-not-allowed disabled:opacity-60";
+
 export function Contact() {
   const [status, setStatus] = useState<FormStatus>("idle");
-  const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
-  const formAction = formspreeId
-    ? `https://formspree.io/f/${formspreeId}`
-    : undefined;
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const isSubmitting = status === "submitting";
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!formAction) {
-      setStatus("error");
-      return;
-    }
-
     setStatus("submitting");
+    setErrorMessage(null);
+
     const form = e.currentTarget;
     const data = new FormData(form);
 
     try {
-      const res = await fetch(formAction, {
+      const res = await fetch(FORMSPREE_FORM_URL, {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" },
       });
+
+      const body = (await res.json().catch(() => null)) as {
+        error?: string;
+        errors?: { message: string }[];
+      } | null;
+
       if (res.ok) {
         setStatus("success");
         form.reset();
-      } else {
-        setStatus("error");
+        return;
       }
+
+      const message =
+        body?.error ??
+        body?.errors?.map((err) => err.message).join(" ") ??
+        "Something went wrong. Please try again or email us directly.";
+      setErrorMessage(message);
+      setStatus("error");
     } catch {
+      setErrorMessage("Network error. Please check your connection or email us directly.");
       setStatus("error");
     }
   }
@@ -95,7 +107,7 @@ export function Contact() {
             transition={{ delay: 0.1 }}
           >
             <Card>
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                 <div>
                   <label htmlFor="name" className="mb-2 block text-sm font-medium text-foreground">
                     Name
@@ -105,7 +117,9 @@ export function Contact() {
                     name="name"
                     type="text"
                     required
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                    disabled={isSubmitting}
+                    autoComplete="name"
+                    className={inputClassName}
                     placeholder="Your name"
                   />
                 </div>
@@ -118,7 +132,9 @@ export function Contact() {
                     name="email"
                     type="email"
                     required
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                    disabled={isSubmitting}
+                    autoComplete="email"
+                    className={inputClassName}
                     placeholder="you@example.com"
                   />
                 </div>
@@ -130,38 +146,73 @@ export function Contact() {
                     id="message"
                     name="message"
                     required
+                    disabled={isSubmitting}
                     rows={5}
-                    className="w-full resize-none rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                    className={cn(inputClassName, "resize-none")}
                     placeholder="How can we help you?"
                   />
                 </div>
 
-                {!formspreeId && (
-                  <p className="text-sm text-amber-600 dark:text-amber-400">
-                    Add NEXT_PUBLIC_FORMSPREE_ID to .env.local to enable form submission.
-                  </p>
-                )}
-
-                {status === "success" && (
-                  <p className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
-                    <CheckCircle className="h-4 w-4" />
-                    Thank you! Your message has been sent.
-                  </p>
-                )}
-                {status === "error" && (
-                  <p className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
-                    <AlertCircle className="h-4 w-4" />
-                    Something went wrong. Please email us directly.
-                  </p>
-                )}
+                <AnimatePresence mode="wait">
+                  {status === "success" && (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      role="status"
+                      className="flex items-start gap-3 rounded-xl border border-green-500/25 bg-green-500/10 px-4 py-3"
+                    >
+                      <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-green-600 dark:text-green-400" />
+                      <div>
+                        <p className="text-sm font-medium text-green-700 dark:text-green-300">
+                          Message sent successfully
+                        </p>
+                        <p className="mt-1 text-sm text-green-600/90 dark:text-green-400/90">
+                          Thank you for reaching out. We will get back to you as soon as we can.
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                  {status === "error" && (
+                    <motion.div
+                      key="error"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      role="alert"
+                      className="flex items-start gap-3 rounded-xl border border-red-500/25 bg-red-500/10 px-4 py-3"
+                    >
+                      <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600 dark:text-red-400" />
+                      <div>
+                        <p className="text-sm font-medium text-red-700 dark:text-red-300">
+                          Unable to send message
+                        </p>
+                        <p className="mt-1 text-sm text-red-600/90 dark:text-red-400/90">
+                          {errorMessage}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <button
                   type="submit"
-                  disabled={status === "submitting" || !formAction}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                  disabled={isSubmitting}
+                  aria-busy={isSubmitting}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-foreground shadow-lg shadow-accent/20 transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                 >
-                  <Send className="h-4 w-4" />
-                  {status === "submitting" ? "Sending..." : "Send Message"}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                      Sending your message...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" aria-hidden />
+                      Send Message
+                    </>
+                  )}
                 </button>
               </form>
             </Card>

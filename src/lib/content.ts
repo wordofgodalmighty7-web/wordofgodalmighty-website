@@ -7,6 +7,9 @@ export const site = {
   tagline: "Christ-centered digital experiences for a better life",
 };
 
+/** Formspree contact form endpoint */
+export const FORMSPREE_FORM_URL = "https://formspree.io/f/xzdwglnn";
+
 export const navLinks = [
   { label: "Mission", href: "#about" },
   { label: "About", href: "#about" },
@@ -75,15 +78,116 @@ export const team = {
       icon: "user" as const,
       description: "Serving Christ through technology, creativity, and mission-driven work.",
     },
-    {
-      name: "Samuel",
-      role: "Team Member",
-      type: "human" as const,
-      icon: "user" as const,
-      description: "Contributing to Christ-centered projects with dedication and faith.",
-    },
   ],
 };
+
+export const ETSY_SHOP_URL = "https://www.etsy.com/shop/WORDOFGODALMIGHTY";
+
+/** Official Google Play listing — Purity Shield Pro */
+export const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.purityshield.pro";
+
+export type AppScreenshot = {
+  id: string;
+  src: string;
+  alt: string;
+  label?: string;
+};
+
+export type AppProjectCta = {
+  label: string;
+  variant: "primary" | "secondary" | "outline";
+  href?: string;
+  external?: boolean;
+};
+
+export type AppProject = {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  badge: string;
+  type: "app";
+  playStore: {
+    url: string;
+    badgeLabel: string;
+  };
+  galleryIntro: string;
+  screenshots: AppScreenshot[];
+  features: string[];
+  status: { primary: string; secondary: string };
+  ctas: AppProjectCta[];
+};
+
+export type EtsyProduct = {
+  id: string;
+  src: string;
+  alt: string;
+  label?: string;
+};
+
+export type ApparelProject = {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  highlights: string[];
+  badge: string;
+  type: "apparel";
+  etsy: {
+    shopUrl: string;
+    shopName: string;
+    collectionTagline: string;
+    galleryIntro: string;
+  };
+  products: EtsyProduct[];
+  ctas: { label: string; variant: "primary" | "secondary" | "outline" }[];
+};
+
+const etsyProducts: EtsyProduct[] = [
+  {
+    id: "1",
+    src: "/images/etsy/product-1.png",
+    alt: "Navy tee — Know Jesus, Know Salvation design",
+    label: "Know Jesus · Know Salvation",
+  },
+  {
+    id: "2",
+    src: "/images/etsy/product-2.png",
+    alt: "Oatmeal tri-blend tee — Jesus Loves You To The Grave And Back",
+    label: "Jesus Loves You",
+  },
+  {
+    id: "3",
+    src: "/images/etsy/product-3.png",
+    alt: "Mauve tri-blend tee back — Life isn't fair; we would be on the cross",
+    label: "Life Isn't Fair",
+  },
+  {
+    id: "4",
+    src: "/images/etsy/product-4.png",
+    alt: "White Comfort Colors tee — Philippians 4:13 strength through Christ",
+    label: "Philippians 4:13",
+  },
+  {
+    id: "5",
+    src: "/images/etsy/product-5.png",
+    alt: "Coyote brown tee back — Jesus is still doing the impossible",
+    label: "Still Doing the Impossible",
+  },
+  {
+    id: "6",
+    src: "/images/etsy/product-6.png",
+    alt: "Stone oversized tee — The highest place I'll ever be",
+    label: "The Highest Place",
+  },
+  {
+    id: "7",
+    src: "/images/etsy/product-7.png",
+    alt: "Vintage white tee back — Born, died, resurrected, He will come",
+    label: "He Will Come",
+  },
+];
 
 export const projects = {
   title: "Our Projects",
@@ -100,34 +204,99 @@ export const projects = {
         "Spreading positivity and belief in Christ",
         "Active Etsy storefront for 1+ year",
       ],
-      cta: { label: "View on Etsy", href: "#" },
       badge: "Etsy Brand",
       type: "apparel" as const,
-    },
+      etsy: {
+        shopUrl: ETSY_SHOP_URL,
+        shopName: "WORDOFGODALMIGHTY",
+        collectionTagline: "Faith-inspired Christian apparel",
+        galleryIntro:
+          "Each design reflects our mission to spread positivity, belief, and the message of Christ through premium Christian streetwear.",
+      },
+      products: etsyProducts,
+      ctas: [
+        { label: "Visit Our Etsy Store", variant: "primary" as const },
+        { label: "Explore the Collection", variant: "secondary" as const },
+        { label: "Shop on Etsy", variant: "outline" as const },
+      ],
+    } satisfies ApparelProject,
     {
       id: "purity-shield",
       name: "Purity Shield Pro",
       tagline: "Christian-focused purity & discipline app",
       description:
         "A Christian-focused mobile application designed to help people avoid adult content and pornography by guiding them toward repentance, discipline, healing, and spiritual growth in Christ.",
-      features: [
-        "Block harmful adult websites",
-        "Strengthen self-control",
-        "Build spiritual discipline",
-        "Restore purity through Christ",
-        "Faith-based motivation and guidance",
-      ],
-      status: {
-        primary: "Launching soon on Google Play",
-        secondary: "Early access available now",
-      },
-      ctas: [
-        { label: "Learn More", href: "#contact", variant: "secondary" as const },
-        { label: "Get Early Access", href: "#contact", variant: "primary" as const },
-      ],
       badge: "Mobile App",
       type: "app" as const,
-    },
+      playStore: {
+        url: PLAY_STORE_URL,
+        badgeLabel: "Get it on Google Play",
+      },
+      galleryIntro:
+        "Walk through the app experience — blocking harmful content, building discipline, and staying anchored in Christ-centered guidance every day.",
+      screenshots: [
+        {
+          id: "1",
+          src: "/images/purity-shield/screenshot-1.png",
+          alt: "Purity Shield Pro — Stay strong in faith with daily spiritual growth and DNS protection",
+          label: "Stay Strong in Faith",
+        },
+        {
+          id: "2",
+          src: "/images/purity-shield/screenshot-2.png",
+          alt: "Purity Shield Pro — Prayer alarms to build a daily routine with God",
+          label: "Prayer Alarms",
+        },
+        {
+          id: "3",
+          src: "/images/purity-shield/screenshot-3.png",
+          alt: "Purity Shield Pro — Personalized faith journey and motivational Bible messages",
+          label: "Your Faith Journey",
+        },
+        {
+          id: "4",
+          src: "/images/purity-shield/screenshot-4.png",
+          alt: "Purity Shield Pro — Daily Bible quiz and spiritual challenges",
+          label: "Daily Bible Quiz",
+        },
+        {
+          id: "5",
+          src: "/images/purity-shield/screenshot-5.png",
+          alt: "Purity Shield Pro — App Shield blocks distracting apps for spiritual focus",
+          label: "App Shield",
+        },
+        {
+          id: "6",
+          src: "/images/purity-shield/screenshot-6.png",
+          alt: "Purity Shield Pro — Track weekly spiritual progress and build lasting habits",
+          label: "Spiritual Progress",
+        },
+        {
+          id: "7",
+          src: "/images/purity-shield/screenshot-7.png",
+          alt: "Purity Shield Pro — Weekly miracle journey to reflect on God's grace daily",
+          label: "Miracle Journey",
+        },
+      ],
+      features: [
+        "Block harmful adult websites and distracting apps",
+        "DNS protection with 830+ sites blocked",
+        "Daily Bible verses, quizzes, and spiritual search",
+        "Prayer alarms and weekly miracle reflections",
+        "Track spiritual progress and build lasting habits",
+        "Personalized profile with motivational Bible messages",
+        "Restore purity and grow closer to Christ",
+      ],
+      status: {
+        primary: "Available on Google Play",
+        secondary: "Early access & testing builds available",
+      },
+      ctas: [
+        { label: "Get on Google Play", variant: "primary" as const },
+        { label: "View on Play Store", variant: "secondary" as const },
+        { label: "Learn More", variant: "outline" as const, href: "#contact", external: false },
+      ],
+    } satisfies AppProject,
   ],
 };
 

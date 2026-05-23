@@ -29,7 +29,7 @@ export function Team() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
           {team.members.map((member) => {
             const isTrinity = member.type === "trinity";
